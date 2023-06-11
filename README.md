@@ -8,3 +8,12 @@ Dalam proyek ini, terdapat beberapa path yang dapat digunakan yaitu:
 3. `POST    /posts/new`: **Private Route** Untuk menambahkan post baru
 4. `PUT     /posts/:id`: **Private Route** Untuk mengedit post dengan parameter `id`
 5. `DELETE  /posts/:id`: **Private Route** Untuk menghapus post dengan parameter `id`
+
+## Alur Program
+1. Pengguna dapat mengakses route `/posts` tanpa memerlukan token,
+2. Jika pengguna ingin mengakses privateRoute, diperlukan bearer token,
+3. Program mengecek apakah terdapat token yang tersimpan dalam cookies,
+4. Jika ada maka privateRoute dapat diakses,
+5. Jika tidak ada maka privateRoute tidak dapat diakses dan memberikan `error: Unauthorized`
+
+## Alur Generate JWT Token
