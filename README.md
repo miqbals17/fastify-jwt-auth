@@ -1,4 +1,5 @@
 # CRUD dengan JWT Authentication
+![JWT](https://jwt.io/img/badge-compatible.svg)
 
 Proyek CRUD dengan Fastify dan JWT yang disimpan pada Cookies
 

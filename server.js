@@ -7,7 +7,7 @@ fastify.register(require('./routes/admins'));
 fastify.register(require('@fastify/jwt'), {
   secret: 'velenoIX',
   cookie: {
-    cookieName: 'token',
+    cookieName: 'tokenLogin',
   },
 });
 fastify.register(require('@fastify/cookie'));

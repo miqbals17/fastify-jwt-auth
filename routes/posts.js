@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 const {getAllPostsHandler, addPostHandler, getPostHandler, editPostHandler, deletePostHandler} = require('../handler/posts');
 
 const postsRoute = (fastify, options, done) => {
