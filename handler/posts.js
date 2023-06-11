@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const {nanoid} = require('nanoid');
 const posts = require('../cloud/posts');
 
@@ -26,5 +27,6 @@ const addPostHandler = (req, reply) => {
 
   reply.code(200).send('Data berhasil ditambahkan!');
 };
+const editPostHandler = (req, reply) => {};
 
-module.exports = {getAllPostsHandler, getPostHandler, addPostHandler};
+module.exports = {getAllPostsHandler, getPostHandler, addPostHandler, editPostHandler};
