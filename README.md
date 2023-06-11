@@ -1,4 +1,6 @@
 # CRUD dengan JWT Authentication
+![Hyperledger](https://img.shields.io/badge/hyperledger-2F3134?style=for-the-badge&logo=hyperledger&logoColor=white)
+
 Proyek CRUD dengan Fastify dan JWT yang disimpan pada Cookies
 
 Dalam proyek ini, terdapat beberapa path yang dapat digunakan yaitu:
