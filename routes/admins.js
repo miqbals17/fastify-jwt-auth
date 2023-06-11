@@ -2,7 +2,7 @@ const adminsRoute = (fastify, options, done) => {
   fastify.get('/jwtToken', async (req, reply) => {
     const token = await reply.jwtSign({
       'foo': 'bar',
-    }, {expiresIn: 60});
+    }, {expiresIn: 3600});
 
     reply.setCookie('token', token, {
       httpOnly: true,
