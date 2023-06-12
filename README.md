@@ -2,6 +2,8 @@
 ![JWT](https://jwt.io/img/badge-compatible.svg)
 
 Proyek CRUD dengan Fastify dan JWT yang disimpan pada Cookies
+- [Alur Program](#alur-program)
+- [Alur Generate JWT Token](#alur-generate-jwt-token)
 
 Dalam proyek ini, terdapat beberapa path yang dapat digunakan yaitu:
 1. `GET     /posts`: Untuk melihat seluruh data post
