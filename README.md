@@ -18,3 +18,7 @@ Dalam proyek ini, terdapat beberapa path yang dapat digunakan yaitu:
 5. Jika tidak ada maka privateRoute tidak dapat diakses dan memberikan `error: Unauthorized`
 
 ## Alur Generate JWT Token
+1. Pengguna melakukan register akun dengan memasukkan username dan password sebagai body pada path `/register`
+2. Jika sudah terdaftar, pengguna melakukan login pada path `/login`
+3. Jika email terdaftar dan email benar, maka JWT akan *generate* Token yang disimpan dalam *cookies* yang berlaku selama 120 detik
+4. Ketika pengguna mengakses **Private Route**, server akan mengambil data token yang telah tersimpan dalam cookies
