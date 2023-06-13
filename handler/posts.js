@@ -1,31 +1,44 @@
 /* eslint-disable max-len */
 const {nanoid} = require('nanoid');
-const posts = require('../cloud/posts');
+const client = require('../database/connection');
 
 const getAllPostsHandler = (req, reply) => {
-  const data = posts.map(({...data}) => ({id: data.id, title: data.title}));
-  reply.send(data);
+  client.query('SELECT * FROM posts', (err, results) => {
+    if (!err) {
+      const data = results.rows.map(({...data}) => ({id: data.id, title: data.title}));
+      reply.send(data);
+    }
+  });
 };
 
 const getPostHandler = (req, reply) => {
   const {id} = req.params;
 
-  const data = posts.filter((post) => post.id == id)[0];
+  client.query(`SELECT * FROM posts WHERE id='${id}'`, (err, results) => {
+    if (err) {
+      reply.code(404).send(new Error('Id post tidak ditemukan'));
+    }
+    reply.code(200).send(results.rows);
+  });
 
-  if (!data) {
-    reply.code(404).send(new Error('Id post tidak ditemukan'));
-  }
+  // if (!data) {
+  //   reply.code(404).send(new Error('Id post tidak ditemukan'));
+  // }
 
-  reply.code(200).send(data);
+  // reply.code(200).send(data);
 };
 
 const addPostHandler = (req, reply) => {
   const {title, description} = req.body;
   const id = nanoid();
 
-  posts.push({id, title, description});
-
-  reply.code(200).send('Data berhasil ditambahkan!');
+  client.query(`INSERT INTO posts (id, title, description) VALUES ('${id}', '${title}', '${description}')`, (err, results) => {
+    if (err) {
+      reply.code(400).send(err.message);
+    } else {
+      reply.code(200).send({msg: 'Data berhasil ditambahkan!'});
+    }
+  });
 };
 
 const editPostHandler = (req, reply) => {
