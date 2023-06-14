@@ -1,34 +1,37 @@
-const admins = require('../cloud/admins');
+const {nanoid} = require('nanoid');
+const client = require('../database/connection');
 
-const registerAdminHandler = async (req, reply) => {
+const registerAdminHandler = (req, reply) => {
   const {email, password} = req.body;
+  const id = nanoid();
 
-  const data = admins.filter((admin) => admin.email === email)[0];
-
-  if (data) {
-    return reply.code(400).send(new Error('Email telah terdaftar!'));
-  }
-
-  admins.push({email, password});
-  reply.code(200).send({msg: 'Akun berhasil dibuat!'});
+  client.query(`INSERT INTO admins (id, email, password) VALUES ('${id}', '${email}', '${password}')`, (err, results) => {
+    if (err) {
+      reply.code(500).send(new Error(err));
+    } else {
+      reply.code(200).send({msg: 'Akun berhasil didaftarkan'});
+    }
+  });
 };
 
-const loginAdminHandler = async (req, reply) => {
+const loginAdminHandler = (req, reply) => {
   const {email, password} = req.body;
 
-  const data = admins.filter((admin) => admin.email === email)[0];
+  client.query(`SELECT * FROM admins WHERE email='${email}'`, (err, results) => {
+    if (err) {
+      reply.code(500).send(new Error(err));
+    } else if (results.rows.length === 0) {
+      reply.code(404).send(new Error('Email tidak terdaftar!'));
+    } else if (results.rows[0].password !== password) {
+      reply.code(400).send(new Error('Password salah!'));
+    }
 
-  if (!data) {
-    reply.code(404).send(new Error('Email tidak terdaftar!'));
-  } else if (data.password !== password) {
-    reply.code(400).send(new Error('Password salah!'));
-  }
+    const tokenLogin = reply.jwtSign({email}, {expiresIn: 120});
 
-  const tokenLogin = await reply.jwtSign({email}, {expiresIn: 120});
-
-  reply.setCookie('tokenLogin', tokenLogin, {
-    httpOnly: true,
-  }).code(200).send({msg: 'Cookie sent'});
+    reply.setCookie('tokenLogin', tokenLogin, {
+      httpOnly: true,
+    }).code(200).send({msg: 'Cookie sent'});
+  });
 };
 
 module.exports = {registerAdminHandler, loginAdminHandler};
