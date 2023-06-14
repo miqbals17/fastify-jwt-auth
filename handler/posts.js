@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 const {nanoid} = require('nanoid');
 const client = require('../database/connection');
 
@@ -16,16 +15,15 @@ const getPostHandler = (req, reply) => {
 
   client.query(`SELECT * FROM posts WHERE id='${id}'`, (err, results) => {
     if (err) {
-      reply.code(404).send(new Error('Id post tidak ditemukan'));
+      reply.code(400).send(new Error(err));
     }
-    reply.code(200).send(results.rows);
+
+    if (results.rows.length === 0) {
+      reply.code(404).send(new Error('id tidak ditemukan!'));
+    } else {
+      reply.code(200).send(results.rows);
+    }
   });
-
-  // if (!data) {
-  //   reply.code(404).send(new Error('Id post tidak ditemukan'));
-  // }
-
-  // reply.code(200).send(data);
 };
 
 const addPostHandler = (req, reply) => {
@@ -45,29 +43,27 @@ const editPostHandler = (req, reply) => {
   const {id} = req.params;
   const {title, description} = req.body;
 
-  const post = posts.filter((post) => post.id === id)[0];
-
-  if (!post) {
-    reply.code(404).send(new Error('Id post tidak ditemukan'));
-  }
-
-  post.title = title;
-  post.description = description;
-
-  reply.code(200).send('Data berhasil diubah!');
+  client.query(`UPDATE posts SET title='${title}', description='${description}' WHERE id='${id}'`, (err, results) => {
+    if (err) {
+      reply.code(400).send(err.message);
+    } else {
+      reply.code(200).send({msg: 'Data berhasil diubah!'});
+    }
+  });
+  // Error handling ketika data dengan id tidak ditemukan
 };
 
 const deletePostHandler = (req, reply) => {
   const {id} = req.params;
 
-  const index = posts.findIndex((post) => post.id === id);
-
-  if (index === -1) {
-    reply.code(404).send(new Error('Id post tidak ditemukan'));
-  }
-
-  posts.splice(index, 1);
-  reply.code(200).send(`Data dengan id ${id} berhasil dihapus `);
+  client.query(`DELETE FROM posts WHERE id='${id}'`, (err, results) => {
+    if (err) {
+      reply.code(400).send(err.message);
+    } else {
+      reply.code(200).send(`Data dengan id ${id} berhasil dihapus`);
+    }
+  });
+  // Error handling ketika data dengan id tidak ditemukan
 };
 
 module.exports = {getAllPostsHandler, getPostHandler, addPostHandler, editPostHandler, deletePostHandler};
