@@ -17,14 +17,24 @@ const Admins = sq.define('admins', {
   },
 });
 
+const Posts = sq.define('posts', {
+  id: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    primaryKey: true,
+  },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
+
 Admins.sync().then(() => {
   console.log('Admins Model synced');
 });
 
-Admins.create({
-  id: '1',
-  email: '123@lalala.com',
-  password: '123',
-});
-
-module.exports = Admins;
+module.exports = {Admins, Posts};

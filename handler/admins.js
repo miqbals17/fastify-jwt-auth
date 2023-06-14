@@ -1,17 +1,25 @@
 const {nanoid} = require('nanoid');
 const client = require('../config/dbconnection');
+const {Admins} = require('../models/sequelize');
 
 const registerAdminHandler = (req, reply) => {
   const {email, password} = req.body;
   const id = nanoid();
 
-  client.query(`INSERT INTO admins (id, email, password) VALUES ('${id}', '${email}', '${password}')`, (err, results) => {
-    if (err) {
-      reply.code(500).send(new Error(err));
-    } else {
-      reply.code(200).send({msg: 'Akun berhasil didaftarkan'});
-    }
-  });
+  // client.query(`INSERT INTO admins (id, email, password) VALUES ('${id}', '${email}', '${password}')`, (err, results) => {
+  //   if (err) {
+  //     reply.code(500).send(new Error(err));
+  //   } else {
+  //     reply.code(200).send({msg: 'Akun berhasil didaftarkan'});
+  //   }
+  // });
+
+  Admins.create({
+    id: id,
+    email: email,
+    password: password,
+  })
+      .then(() => (reply.send(200).send({msg: 'Akun berhasil didaftarkan'})));
 };
 
 const loginAdminHandler = (req, reply) => {
