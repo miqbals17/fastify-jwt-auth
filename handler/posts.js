@@ -1,5 +1,5 @@
 const {nanoid} = require('nanoid');
-const client = require('../database/connection');
+const client = require('../config/dbconnection');
 
 const getAllPostsHandler = (req, reply) => {
   client.query('SELECT * FROM posts', (err, results) => {

@@ -1,4 +1,4 @@
-const client = require('./database/connection');
+const client = require('./config/dbconnection');
 
 const fastify = require('fastify')({logger: true});
 
@@ -24,7 +24,7 @@ fastify.decorate('AuthJWT', async (req, reply) => {
 
 const startServer = async () => {
   try {
-    fastify.listen({port: PORT});
+    await fastify.listen({port: PORT});
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

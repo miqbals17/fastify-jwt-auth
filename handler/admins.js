@@ -1,5 +1,5 @@
 const {nanoid} = require('nanoid');
-const client = require('../database/connection');
+const client = require('../config/dbconnection');
 
 const registerAdminHandler = (req, reply) => {
   const {email, password} = req.body;
