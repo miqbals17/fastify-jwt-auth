@@ -37,4 +37,6 @@ Admins.sync().then(() => {
   console.log('Admins Model synced');
 });
 
+Admins.findAll({where: {email: 'muhammadiqbals@mail.ugm.ac.id'}}).then((res) => console.log(res[0].id));
+
 module.exports = {Admins, Posts};
