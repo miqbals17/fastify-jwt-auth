@@ -1,29 +1,36 @@
 const {nanoid} = require('nanoid');
 const client = require('../config/dbconnection');
+const {Posts} = require('../models/sequelize');
 
 const getAllPostsHandler = (req, reply) => {
-  client.query('SELECT * FROM posts', (err, results) => {
-    if (!err) {
-      const data = results.rows.map(({...data}) => ({id: data.id, title: data.title}));
-      reply.send(data);
-    }
-  });
+  Posts.findAll()
+      .then((res) => reply.code(200).send(res))
+      .catch((err) => reply.code(500).send(err));
 };
 
 const getPostHandler = (req, reply) => {
   const {id} = req.params;
 
-  client.query(`SELECT * FROM posts WHERE id='${id}'`, (err, results) => {
-    if (err) {
-      reply.code(400).send(new Error(err));
-    }
+  Posts.findAll({where: {id: id}})
+      .then((res) => {
+        if (res.length === 0) {
+          reply.code(404).send(new Error('Id tidak ditemukan.'));
+        } else {
+          reply.code(200).send(res[0]);
+        }
+      })
+      .catch((err) => reply.code(500).send(err));
+  // client.query(`SELECT * FROM posts WHERE id='${id}'`, (err, results) => {
+  //   if (err) {
+  //     reply.code(400).send(new Error(err));
+  //   }
 
-    if (results.rows.length === 0) {
-      reply.code(404).send(new Error('id tidak ditemukan!'));
-    } else {
-      reply.code(200).send(results.rows);
-    }
-  });
+  //   if (results.rows.length === 0) {
+  //     reply.code(404).send(new Error('id tidak ditemukan!'));
+  //   } else {
+  //     reply.code(200).send(results.rows);
+  //   }
+  // });
 };
 
 const addPostHandler = (req, reply) => {

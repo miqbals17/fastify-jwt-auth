@@ -25,17 +25,19 @@ const loginAdminHandler = (req, reply) => {
           reply.code(404).send(new Error('Email tidak terdaftar!'));
         } else if (res[0].password !== password) {
           reply.code(400).send(new Error('Password salah!'));
-        } else {
-          const tokenLogin = reply.jwtSign({email}, {expiresIn: 120});
-
-          reply.setCookie('tokenLogin', tokenLogin, {
-            httpOnly: true,
-          }).code(200).send({msg: 'Cookie sent'});
         }
       })
       .catch((err) => {
         reply.code(500).send(err);
       });
+
+  reply.jwtSign({email}, {expiresIn: 120})
+      .then((res) => {
+        reply.setCookie('tokenLogin', res, {
+          httpOnly: true,
+        }).code(200).send({msg: 'Cookie sent'});
+      })
+      .catch((err) => reply.code(500).send(err));
 };
 
 module.exports = {registerAdminHandler, loginAdminHandler};
