@@ -1,5 +1,3 @@
-const client = require('./config/dbconnection');
-
 const fastify = require('fastify')({logger: true});
 
 const PORT = 5000;
@@ -30,13 +28,5 @@ const startServer = async () => {
     process.exit(1);
   }
 };
-
-client.connect((err) => {
-  if (err) {
-    console.log(err.message);
-  } else {
-    console.log('Database Connected');
-  }
-});
 
 startServer();
