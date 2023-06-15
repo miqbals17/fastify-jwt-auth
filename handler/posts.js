@@ -1,5 +1,5 @@
 const {nanoid} = require('nanoid');
-const {Posts} = require('../models/sequelize');
+const Posts = require('../models/posts');
 
 const getAllPostsHandler = (req, reply) => {
   Posts.findAll()

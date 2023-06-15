@@ -1,5 +1,5 @@
 const {nanoid} = require('nanoid');
-const {Admins} = require('../models/sequelize');
+const Admins = require('../models/admins');
 
 const registerAdminHandler = (req, reply) => {
   const {email, password} = req.body;
