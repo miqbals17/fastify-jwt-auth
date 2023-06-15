@@ -1,5 +1,5 @@
 # CRUD dengan JWT Authentication
-![JWT](https://jwt.io/img/badge-compatible.svg)
+![JWT](https://jwt.io/img/badge-compatible.svg) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
 Proyek CRUD dengan Fastify dan JWT yang disimpan pada Cookies
 - [Alur Program](#alur-program)
