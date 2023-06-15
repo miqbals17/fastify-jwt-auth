@@ -1,5 +1,4 @@
 const {nanoid} = require('nanoid');
-const client = require('../config/dbconnection');
 const {Posts} = require('../models/sequelize');
 
 const getAllPostsHandler = (req, reply) => {
@@ -20,57 +19,41 @@ const getPostHandler = (req, reply) => {
         }
       })
       .catch((err) => reply.code(500).send(err));
-  // client.query(`SELECT * FROM posts WHERE id='${id}'`, (err, results) => {
-  //   if (err) {
-  //     reply.code(400).send(new Error(err));
-  //   }
-
-  //   if (results.rows.length === 0) {
-  //     reply.code(404).send(new Error('id tidak ditemukan!'));
-  //   } else {
-  //     reply.code(200).send(results.rows);
-  //   }
-  // });
 };
 
 const addPostHandler = (req, reply) => {
   const {title, description} = req.body;
   const id = nanoid();
 
-  client.query(`INSERT INTO posts (id, title, description) VALUES ('${id}', '${title}', '${description}')`, (err, results) => {
-    if (err) {
-      reply.code(400).send(err.message);
-    } else {
-      reply.code(200).send({msg: 'Data berhasil ditambahkan!'});
-    }
-  });
+  Posts.create({
+    id: id,
+    title: title,
+    description: description,
+  }).then(() => reply.code(200).send({msg: 'Data berhasil ditambahkan!'}))
+      .catch((err) => reply.code(400).send(err));
 };
 
 const editPostHandler = (req, reply) => {
   const {id} = req.params;
   const {title, description} = req.body;
 
-  client.query(`UPDATE posts SET title='${title}', description='${description}' WHERE id='${id}'`, (err, results) => {
-    if (err) {
-      reply.code(400).send(err.message);
-    } else {
-      reply.code(200).send({msg: 'Data berhasil diubah!'});
-    }
-  });
-  // Error handling ketika data dengan id tidak ditemukan
+  Posts.update({
+    title: title,
+    description: description,
+  }, {where: {id: id}})
+      .then(() => reply.code(200).send({msg: 'Data berhasil diubah.'}))
+      .catch((err) => reply.code(400).send(err));
 };
 
 const deletePostHandler = (req, reply) => {
   const {id} = req.params;
 
-  client.query(`DELETE FROM posts WHERE id='${id}'`, (err, results) => {
-    if (err) {
-      reply.code(400).send(err.message);
-    } else {
-      reply.code(200).send(`Data dengan id ${id} berhasil dihapus`);
-    }
-  });
-  // Error handling ketika data dengan id tidak ditemukan
+  Posts.destroy({
+    where: {
+      id: id,
+    },
+  }).then(() => reply.code(200).send({msg: `Data dengan id: ${id} berhasil dihapus.`}))
+      .catch((err) => reply.code(400).send(err));
 };
 
 module.exports = {getAllPostsHandler, getPostHandler, addPostHandler, editPostHandler, deletePostHandler};
