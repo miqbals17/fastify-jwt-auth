@@ -5,12 +5,14 @@ Proyek CRUD dengan Fastify dan JWT yang disimpan pada Cookies
 - [Alur Program](#alur-program)
 - [Alur Generate JWT Token](#alur-generate-jwt-token)
 
-Dalam proyek ini, terdapat beberapa path yang dapat digunakan yaitu:
+Route Path:
 1. `GET     /posts`: Untuk melihat seluruh data post
 2. `GET     /posts/:id`: **Private Route** Untuk melihat detail post dengan parameter `id`
 3. `POST    /posts/new`: **Private Route** Untuk menambahkan post baru
 4. `PUT     /posts/:id`: **Private Route** Untuk mengedit post dengan parameter `id`
 5. `DELETE  /posts/:id`: **Private Route** Untuk menghapus post dengan parameter `id`
+6. `POST /register`: Untuk mendaftarkan akun dengan parameter email dan password
+7. `POST /login`: Untuk login akun dan mendapatkan JWT Token dengan parameter email dan password
 
 ## Alur Program
 1. Pengguna dapat mengakses route `/posts` tanpa memerlukan token,
